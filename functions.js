@@ -40,24 +40,16 @@ var initialize_row = function(c) {
 	for(var i = 0; i < c; i++) {
 		positions.push(i);
 	}
-	// now set half of these values to randomly be "0s"
-	var array_0 = []
+	// now set half of these values to randomly be "0s" by removing those values from the "positions" array
 	for(var i = 0; i < c/2; i++) {
 		// first pick a random position between 0 and (c-i)
 		var random_index = Math.floor(Math.random()*(c-i));
-		// now offset this position by the number of elements already in array_0 that are < the random number
-		var offset = 0;
-		for(var j = 0; j < array_0.length; j++) {
-			if(array_0[i] <= random_index)
-				offset++
-		}
-		console.log(array_0, random_index, offset);
-		array_0.push(random_index+offset);
+		positions.pop(random_index);
 	}
 	// finally, make the array of equal numbers of 0s and 1s
 	var return_array = [];
 	for(var i = 0; i < c; i++) {
-		if(array_0.indexOf(i) != -1)
+		if(positions.indexOf(i) != -1)
 			return_array[i] = 0;
 		else return_array[i] = 1;
 	}
