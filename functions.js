@@ -4,9 +4,12 @@
 // 17 January 2014 (Adapted from Mathematica code written in June 2013)
 // Please see README.md for a description of the game
 
-var row, rows, columns, rules, score, rows_left, reveal, current_row;
+var row, rows, columns, rules, score, rows_left, reveal, current_row, turn, human_player, computer_player;
 
-var initialize_vars = function(r, c) {
+var initialize_vars = function(r, c, t) {
+	turn = 0; // whose turn it is
+	human_player = t; // whether the human player goes first or second
+	computer_player = opposite(t); // the computer player is the other player
 	row = 0; // the current row number
 	rows = r; // the number of rows total
 	columns = c; // the number of columns total
@@ -116,15 +119,16 @@ var change_squares = function(squares) {
 // turn_type is a string representing what the player wants to do (either "reveal", "squares", or "rule")
 // parameter is an extra parameter for calculations, if needed
 // returns True if the turn was successful, False if something went wrong
-var compute_turn = function(player, turn_type, parameter) {
+var compute_turn = function(turn_type, parameter) {
 	if(turn_type == "reveal") {
 		calculate_next_row();
-		reveal[player] = 2;
+		reveal[turn] = 2;
+		turn = opposite(turn);
 		return true;
 	}
 	else {
 		// check to see if the player must reveal a row
-		if(reveal[player] == 0) {
+		if(reveal[turn] == 0) {
 			console.log("You must reveal the next row this turn.");
 			return false;
 		}
@@ -142,7 +146,8 @@ var compute_turn = function(player, turn_type, parameter) {
 			}
 			// if all this is good, change the given squares
 			change_squares(parameter);
-			reveal[player]--;
+			reveal[turn]--;
+			turn = opposite(turn);
 			return true;
 		}
 		else if(turn_type == "rule") {
@@ -153,7 +158,8 @@ var compute_turn = function(player, turn_type, parameter) {
 			}
 			// if this is valid, change the given rule
 			change_rule(parameter);
-			reveal[player]--;
+			reveal[turn]--;
+			turn = opposite(turn);
 			return true;
 		}
 		else {
