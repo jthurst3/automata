@@ -45,8 +45,8 @@ function validate_create() {
 	if(isValidated) {
 		// get the turn number (if the game is validated, one radio button must be checked.)
 		if(turn_elements[0].checked)
-			turn = 1;
-		else turn = 2;
+			turn = 0;
+		else turn = 1;
 		// create the game
 		create_game(columns, rows, turn);
 		return false;
