@@ -44,7 +44,7 @@ var initialize_row = function(c) {
 	for(var i = 0; i < c/2; i++) {
 		// first pick a random position between 0 and (c-i)
 		var random_index = Math.floor(Math.random()*(c-i));
-		positions.pop(random_index);
+		positions.splice(random_index, 1);
 	}
 	// finally, make the array of equal numbers of 0s and 1s
 	var return_array = [];
