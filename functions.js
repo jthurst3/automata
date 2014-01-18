@@ -19,7 +19,7 @@ var initialize_vars = function(r, c, t) {
 	rules = initialize_rules(); // initialize the automata rules
 	rows_left = r-1; // the number of rows left to be revealed
 	reveal = [2,2]; // the number of turns until each player must reveal a row
-}
+};
 
 // computes the score given the current row
 var compute_score = function(current_row) {
@@ -29,7 +29,7 @@ var compute_score = function(current_row) {
 	for(var i = 0; i < current_row.length; i++) {
 		score[current_row[i]]++;
 	}
-}
+};
 
 // initializes the first row of the board
 var initialize_row = function(c) {
@@ -61,14 +61,14 @@ var initialize_row = function(c) {
 		else return_array[i] = 1;
 	}
 	return return_array;
-}
+};
 
 // initializes the four automata rules
 var initialize_rules = function() {
 	// call initialize_row with a parameter of 4
 	var squares = initialize_row(4);
 	return squares;
-}
+};
 
 // calculates the next row of the board, based on the current state of the board (rules and current squares)
 var calculate_next_row = function() {
@@ -76,7 +76,7 @@ var calculate_next_row = function() {
 	// loop through the array of current squares, applying the correct automata rule to each pair
 	for(var i = 0; i < columns; i++) {
 		// get the relevant pair of squares (loops back around)
-		var pair = [current_row[i], current_row[(i+1)%columns];
+		var pair = [current_row[i], current_row[(i+1)%columns]];
 		// apply the correct automata rule to these squares
 		next_row.push(compute_rule(pair));
 	}
@@ -85,7 +85,7 @@ var calculate_next_row = function() {
 	row++;
 	rows_left--;
 	compute_score(current_row);
-}
+};
 
 // computes the correct next square given a pair of current squares
 var compute_rule = function(pair) {
@@ -93,26 +93,26 @@ var compute_rule = function(pair) {
 	var automata_rule = 2*pair[0] + pair[1]; // we use a variant of Stephen Wolfram's numbering system for automata rules
 	// finally, return the corresponding replacement
 	return rules[automata_rule];
-}
+};
 
 // changes the given rule
 var change_rule = function(rule_number) {
 	rules[rule_number] = opposite(rules[rule_number]);
-}
+};
 
 // returns the opposite binary value
 var opposite = function(binary_value) {
 	return 1 - binary_value;
 	// also could have done
 	// return (binary_value+1)%2
-}
+};
 
 // changes a set of squares
 var change_squares = function(squares) {
 	for(var i = 0; i < min(squares.length, 5); i++) {
 		current_row[squares[i]] = opposite(current_row[squares[i]]);
 	}
-}
+};
 
 // computes a player's turn
 // player is the player number (0 or 1)
@@ -168,7 +168,7 @@ var compute_turn = function(turn_type, parameter) {
 			return false;
 		}
 	}
-}
+};
 
 // checks to see if a player entered valid square positions
 var validNumbers = function(squares) {
@@ -177,7 +177,7 @@ var validNumbers = function(squares) {
 			return false;
 	}
 	return true;
-}
+};
 
 
 
