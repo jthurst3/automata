@@ -51,7 +51,7 @@ var initialize_row = function(c) {
 			if(array_0[i] <= random_index)
 				offset++
 		}
-		console.log(random_index, offset);
+		console.log(array_0, random_index, offset);
 		array_0.push(random_index+offset);
 	}
 	// finally, make the array of equal numbers of 0s and 1s
