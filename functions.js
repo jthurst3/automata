@@ -114,6 +114,7 @@ var change_squares = function(squares) {
 	for(var i = 0; i < Math.min(squares.length, 5); i++) {
 		current_row[squares[i]] = opposite(current_row[squares[i]]);
 	}
+	compute_score(current_row);
 };
 
 // computes a player's turn
