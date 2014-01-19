@@ -48,6 +48,7 @@ function validate_create() {
 			turn = 0;
 		else turn = 1;
 		// create the game
+		console.log("turn ", turn);
 		create_game(columns, rows, turn);
 		return false;
 	}
