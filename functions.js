@@ -5,6 +5,7 @@
 // Please see README.md for a description of the game
 
 var row, rows, columns, rules, score, rows_left, reveal, current_row, turn, human_player, computer_player, clickable_rules, clickable_squares;
+var square_queue;
 
 var initialize_vars = function(r, c, t) {
 	turn = 0; // whose turn it is
@@ -26,6 +27,7 @@ var initialize_vars = function(r, c, t) {
 		clickable_squares = false;
 		clickable_rules = false;
 	}
+	square_queue = [];
 };
 
 // computes the score given the current row
@@ -150,6 +152,7 @@ var compute_turn = function(turn_type, parameter) {
 			reveal[turn]--;
 			turn = opposite(turn);
 			compute_clickable();
+			square_queue = [];
 			return true;
 		}
 		else if(turn_type == "rule") {
