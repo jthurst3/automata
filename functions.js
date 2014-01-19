@@ -5,7 +5,7 @@
 // Please see README.md for a description of the game
 
 var row, rows, columns, rules, score, rows_left, reveal, current_row, turn, human_player, computer_player, clickable_rules, clickable_squares;
-var square_queue;
+var square_queue, invalid_squares, invalid_rule;
 
 var initialize_vars = function(r, c, t) {
 	turn = 0; // whose turn it is
@@ -28,6 +28,8 @@ var initialize_vars = function(r, c, t) {
 		clickable_rules = false;
 	}
 	square_queue = [];
+	invalid_squares = []; // an array representing invalid squares to change (if the previous player just changed those squares)
+	invalid_rule = -1; // a similar parameter for the invalid automata rules
 };
 
 // computes the score given the current row
@@ -45,7 +47,7 @@ var initialize_row = function(c) {
 	// inspired by http://stackoverflow.com/questions/12987719/javascript-how-to-randomly-sample-items-without-replacement
 	// we want to select the same number of 0s and 1s
 	// initialize an array of positions
-	var positions = []
+	var positions = [];
 	for(var i = 0; i < c; i++) {
 		positions.push(i);
 	}
@@ -100,6 +102,7 @@ var compute_rule = function(pair) {
 // changes the given rule
 var change_rule = function(rule_number) {
 	rules[rule_number] = opposite(rules[rule_number]);
+	invalid_rule = rule_number;
 };
 
 // returns the opposite binary value
@@ -128,6 +131,8 @@ var compute_turn = function(turn_type, parameter) {
 		reveal[turn] = 2;
 		turn = opposite(turn);
 		compute_clickable();
+		invalid_squares = [];
+		invalid_rule = -1;
 		return true;
 	}
 	else {
@@ -153,7 +158,9 @@ var compute_turn = function(turn_type, parameter) {
 			reveal[turn]--;
 			turn = opposite(turn);
 			compute_clickable();
+			invalid_squares = square_queue.slice(0);
 			square_queue = [];
+			invalid_rule = -1;
 			return true;
 		}
 		else if(turn_type == "rule") {
@@ -167,6 +174,7 @@ var compute_turn = function(turn_type, parameter) {
 			reveal[turn]--;
 			turn = opposite(turn);
 			compute_clickable();
+			invalid_squares = [];
 			return true;
 		}
 		else {
@@ -195,6 +203,77 @@ var validNumbers = function(squares) {
 			return false;
 	}
 	return true;
+};
+
+// makes a move (computer player)
+var computer_make_move = function() {
+	// get the rules owned by the human
+	var human_rules = [];
+	for(var i = 0; i < 4; i++) {
+		if(rules[i] == human_player && invalid_rule != i) {
+			human_rules.push(i);
+		}
+	}
+	// get the squares owned by the human
+	var human_squares = [];
+	for(var i = 0; i < columns; i++) {
+		if(current_row[i] == human_player && invalid_squares.indexOf(i) == -1) {
+			human_squares.push(i);
+		}
+	}
+
+	// check if we need to reveal a row
+	if(reveal[computer_player] == 0 || human_rules.length == 0 || human_squares.length == 0) {
+		compute_turn("reveal");
+		show_next_row();
+        update_score_header();
+        update_turn_header();
+        return true;
+	}
+	// otherwise, randomly select one available option
+	var option = Math.round(Math.random());
+	if(option == 0) {
+		// change some squares
+		// if there are <= 5 squares owned by the human, change all of them
+		if(human_squares.length <= 5) {
+			compute_turn("squares", human_squares);
+			update_squares();
+            make_squares_clickable();
+            make_rules_clickable();
+            update_score_header();
+            update_turn_header();
+            return true;
+		}
+		// otherwise, randomly select up to five of them
+		int selected_squares = [];
+		int square_len = human_squares.length;
+		for(var i = 0; i < 5; i++) {
+			var random_index = Math.floor(Math.random()*(square_len-i));
+			selected_squares.push(human_squares[random_index]);
+			human_squares.splice(random_index, 1);
+		}
+		// and then change those 5
+		compute_turn("squares", human_squares);
+		update_squares();
+        make_squares_clickable();
+        make_rules_clickable();
+        update_score_header();
+        update_turn_header();
+        return true;
+	} else {
+		// change a rule
+		// pick a rule randomly
+		int rule_to_change = Math.floor(Math.random()*(human_rules.length));
+		// change that rule
+		compute_turn("rule", rule_to_change);
+        update_turn_header();
+        show_rule_change(rule_to_change);
+        make_squares_clickable();
+        make_rules_clickable();
+        return true;
+	}
+	alert("There was an error on our part. Sorry about that.");
+	return false;
 };
 
 
