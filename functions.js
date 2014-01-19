@@ -127,12 +127,16 @@ var change_squares = function(squares) {
 // returns True if the turn was successful, False if something went wrong
 var compute_turn = function(turn_type, parameter) {
 	if(turn_type == "reveal") {
+		cancel_update_squares();
 		calculate_next_row();
 		reveal[turn] = 2;
 		turn = opposite(turn);
 		compute_clickable();
 		invalid_squares = [];
 		invalid_rule = -1;
+		show_next_row();
+        update_score_header();
+        update_turn_header();
 		return true;
 	}
 	else {
@@ -161,6 +165,11 @@ var compute_turn = function(turn_type, parameter) {
 			invalid_squares = square_queue.slice(0);
 			square_queue = [];
 			invalid_rule = -1;
+			update_squares();
+            make_squares_clickable();
+            make_rules_clickable();
+            update_score_header();
+            update_turn_header();
 			return true;
 		}
 		else if(turn_type == "rule") {
@@ -170,11 +179,16 @@ var compute_turn = function(turn_type, parameter) {
 				return false;
 			}
 			// if this is valid, change the given rule
+			cancel_update_squares();
 			change_rule(parameter);
 			reveal[turn]--;
 			turn = opposite(turn);
 			compute_clickable();
 			invalid_squares = [];
+			update_turn_header();
+            show_rule_change(elemID);
+            make_squares_clickable();
+            make_rules_clickable();
 			return true;
 		}
 		else {
