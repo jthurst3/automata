@@ -4,7 +4,7 @@
 // 17 January 2014 (Adapted from Mathematica code written in June 2013)
 // Please see README.md for a description of the game
 
-var row, rows, columns, rules, score, rows_left, reveal, current_row, turn, human_player, computer_player;
+var row, rows, columns, rules, score, rows_left, reveal, current_row, turn, human_player, computer_player, clickable_rules, clickable_squares;
 
 var initialize_vars = function(r, c, t) {
 	turn = 0; // whose turn it is
@@ -19,6 +19,13 @@ var initialize_vars = function(r, c, t) {
 	rules = initialize_rules(); // initialize the automata rules
 	rows_left = r-1; // the number of rows left to be revealed
 	reveal = [2,2]; // the number of turns until each player must reveal a row
+	if(human_player == 0) {
+		clickable_squares = true;
+		clickable_rules = true;
+	} else {
+		clickable_squares = false;
+		clickable_rules = false;
+	}
 };
 
 // computes the score given the current row
