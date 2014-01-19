@@ -5,7 +5,7 @@ function validateGame(prefix) {
 	var columns = document.getElementById(prefix + "columns").value;
 	var rows = document.getElementById(prefix + "rows").value;
 	var turn_elements = document.getElementsByName(prefix + "turn");
-	var turn;
+	var turn_clicked;
 	var values = [columns, rows];
 	var valueNames = ["number of columns", "number of rows"];
 	for(var i = 0; i < values.length; i++) {
@@ -45,11 +45,11 @@ function validate_create() {
 	if(isValidated) {
 		// get the turn number (if the game is validated, one radio button must be checked.)
 		if(turn_elements[0].checked)
-			turn = 0;
-		else turn = 1;
+			turn_clicked = 0;
+		else turn_clicked = 1;
 		// create the game
-		console.log("turn ", turn);
-		create_game(columns, rows, turn);
+		console.log("turn ", turn_clicked);
+		create_game(columns, rows, turn_clicked);
 		return false;
 	}
 	else {
