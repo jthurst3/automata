@@ -124,6 +124,7 @@ var compute_turn = function(turn_type, parameter) {
 		calculate_next_row();
 		reveal[turn] = 2;
 		turn = opposite(turn);
+		compute_clickable();
 		return true;
 	}
 	else {
@@ -148,6 +149,7 @@ var compute_turn = function(turn_type, parameter) {
 			change_squares(parameter);
 			reveal[turn]--;
 			turn = opposite(turn);
+			compute_clickable();
 			return true;
 		}
 		else if(turn_type == "rule") {
@@ -160,6 +162,7 @@ var compute_turn = function(turn_type, parameter) {
 			change_rule(parameter);
 			reveal[turn]--;
 			turn = opposite(turn);
+			compute_clickable();
 			return true;
 		}
 		else {
@@ -167,6 +170,17 @@ var compute_turn = function(turn_type, parameter) {
 			console.log("Invalid turn type.");
 			return false;
 		}
+	}
+};
+
+// checks to see if we can reveal turns or squares
+var compute_clickable = function() {
+	if(turn == human_player && reveal[human_player] > 0) {
+		clickable_squares = true;
+		clickable_rules = true;
+	} else {
+		clickable_squares = false;
+		clickable_rules = false;
 	}
 };
 
