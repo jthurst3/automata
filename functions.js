@@ -186,7 +186,7 @@ var compute_turn = function(turn_type, parameter) {
 			compute_clickable();
 			invalid_squares = [];
 			update_turn_header();
-            show_rule_change(elemID);
+            show_rule_change(parameter);
             make_squares_clickable();
             make_rules_clickable();
 			return true;
