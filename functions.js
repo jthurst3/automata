@@ -111,7 +111,7 @@ var opposite = function(binary_value) {
 
 // changes a set of squares
 var change_squares = function(squares) {
-	for(var i = 0; i < min(squares.length, 5); i++) {
+	for(var i = 0; i < Math.min(squares.length, 5); i++) {
 		current_row[squares[i]] = opposite(current_row[squares[i]]);
 	}
 };
