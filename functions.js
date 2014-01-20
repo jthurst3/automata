@@ -5,7 +5,7 @@
 // Please see README.md for a description of the game
 
 var row, rows, columns, rules, score, rows_left, reveal, current_row, turn, human_player, computer_player, clickable_rules, clickable_squares;
-var square_queue, invalid_squares, invalid_rule, game_over;
+var square_queue, invalid_squares, invalid_rule, game_over, human_color;
 
 var initialize_vars = function(r, c, t) {
 	turn = 0; // whose turn it is
@@ -23,9 +23,11 @@ var initialize_vars = function(r, c, t) {
 	if(human_player == 0) {
 		clickable_squares = true;
 		clickable_rules = true;
+		human_color = "white";
 	} else {
 		clickable_squares = false;
 		clickable_rules = false;
+		human_color = "black";
 	}
 	square_queue = [];
 	invalid_squares = []; // an array representing invalid squares to change (if the previous player just changed those squares)
