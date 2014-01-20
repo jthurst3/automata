@@ -128,7 +128,6 @@ var change_squares = function(squares) {
 var compute_turn = function(turn_type, parameter) {
 	if(turn_type == "reveal") {
 		cancel_update_squares();
-		compute_clickable();
 		calculate_next_row();
 		reveal[turn] = 2;
 		turn = opposite(turn);
