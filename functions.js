@@ -126,6 +126,10 @@ var change_squares = function(squares) {
 // parameter is an extra parameter for calculations, if needed
 // returns True if the turn was successful, False if something went wrong
 var compute_turn = function(turn_type, parameter) {
+	if(game_over) {
+		console.log("The game is over.");
+		return false;
+	}
 	if(turn_type == "reveal") {
 		turn_reveal();
 		return true;
@@ -209,8 +213,50 @@ var turn_postprocess = function(move_type, parameter) {
 	// make squares and rules clickable or not
 	make_squares_clickable();
 	make_rules_clickable();
+	// see if we've finished the game
+	if(rows_left == 0) {
+		game_postprocess();
+	}
 	return true;
 };
+
+// function to call at the end of the game
+var game_postprocess = function() {
+	if(score[0]>score[1]) {
+		// Player 1 won the game
+		if(human_player == 0) {
+			winning_message();
+		} else {
+			losing_message();
+		}
+	} else if(score[1]>score[0]) {
+		// Player 2 won the game
+		if(human_player == 1) {
+			winning_message();
+		} else {
+			losing_message();
+		}
+	} else {
+		// Game is tied
+		tie_message();
+	}
+	start_game();
+};
+// the winning message
+var winning_message = function() {
+	alert("You just beat my computer program! Bet you can't beat it the next time around though...");
+	return true;
+}
+// the losing message
+var losing_message = function() {
+	alert("You just lost to my computer program. Can you do better?");
+	return true;
+}
+// message if the game is tied
+var tie_message = function() {
+	alert("The game is a draw. Can you do better?");
+	return true;
+}
 
 // reveals a row
 var turn_reveal = function() {
