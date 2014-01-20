@@ -5,7 +5,7 @@
 // Please see README.md for a description of the game
 
 var row, rows, columns, rules, score, rows_left, reveal, current_row, turn, human_player, computer_player, clickable_rules, clickable_squares;
-var square_queue, invalid_squares, invalid_rule;
+var square_queue, invalid_squares, invalid_rule, game_over;
 
 var initialize_vars = function(r, c, t) {
 	turn = 0; // whose turn it is
@@ -30,6 +30,7 @@ var initialize_vars = function(r, c, t) {
 	square_queue = [];
 	invalid_squares = []; // an array representing invalid squares to change (if the previous player just changed those squares)
 	invalid_rule = -1; // a similar parameter for the invalid automata rules
+	game_over = false; // the game has just begun.
 };
 
 // computes the score given the current row
@@ -88,6 +89,7 @@ var calculate_next_row = function() {
 	current_row = next_row;
 	row++;
 	rows_left--;
+	check_game_over();
 	compute_score(current_row);
 };
 
@@ -296,6 +298,14 @@ var validNumbers = function(squares) {
 	}
 	return true;
 };
+
+// checks to see if the game is over
+var check_game_over = function() {
+	if(rows_left == 0) {
+		game_over = true;
+	}
+	return true;
+}
 
 
 
